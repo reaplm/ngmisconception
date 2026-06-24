@@ -1,7 +1,7 @@
 <div class="min-h-screen w-full bg-zinc-50 dark:bg-zinc-900 flex items-center justify-center p-4 sm:p-6 lg:p-8">
     <div class="w-full max-w-sm">
         <!-- login.component.html -->
-        <form action="#" method="POST" class="grid w-full max-w-sm grid-cols-1 gap-8">
+        <form (ngSubmit)="onSubmit()" method="POST" class="grid w-full max-w-sm grid-cols-1 gap-8">
         
         <!-- Logo (Standard SVG styled with Tailwind) -->
         <svg class="h-6 text-zinc-950 dark:text-white forced-colors:text-[CanvasText]" viewBox="0 0 24 24" fill="currentColor">
@@ -15,18 +15,23 @@
 
         <!-- Email Field -->
         <div class="space-y-2">
-            <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Email</label>
-            <input type="email" name="email" class="block w-full rounded-md border-0 py-1.5 text-zinc-950 shadow-sm ring-1 ring-inset ring-zinc-300 placeholder:text-zinc-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-white/5 dark:text-white dark:ring-white/10" />
+            <label  
+            class="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Email</label>
+            <input type="email" name="email" [(ngModel)]="loginData.email"
+             class="block w-full rounded-md border-0 py-1.5 text-zinc-950 shadow-sm ring-1 ring-inset ring-zinc-300 placeholder:text-zinc-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-white/5 dark:text-white dark:ring-white/10" />
         </div>
 
         <!-- Password Field -->
         <div class="space-y-2">
-            <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Password</label>
-            <input type="password" name="password" class="block w-full rounded-md border-0 py-1.5 text-zinc-950 shadow-sm ring-1 ring-inset ring-zinc-300 placeholder:text-zinc-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-white/5 dark:text-white dark:ring-white/10" />
+            <label 
+            class="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Password</label>
+            <input type="password" name="password" [(ngModel)]="loginData.password" 
+            class="block w-full rounded-md border-0 py-1.5 text-zinc-950 shadow-sm ring-1 ring-inset ring-zinc-300 placeholder:text-zinc-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-white/5 dark:text-white dark:ring-white/10" />
         </div>
         
         <!-- Submit Button -->
-        <button type="submit" class="flex w-full justify-center rounded-md bg-zinc-950 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-zinc-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-950 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200">
+        <button type="submit" 
+            class="flex w-full justify-center rounded-md bg-zinc-950 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-zinc-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-950 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200">
             Login
         </button>
 
