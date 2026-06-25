@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { Login } from './pages/login/login';
 import { AuthLayout } from './layouts/auth-layout/auth-layout';
 import { Exam } from './pages/exam/exam';
+import { authGuard } from './guards/auth-guard';
 
 export const routes: Routes = [
     {
@@ -12,7 +13,11 @@ export const routes: Routes = [
       { path: '', redirectTo: 'login', pathMatch: 'full' }
     ]
   },
-  { path: 'exam', component: Exam },
+  { 
+    path: 'exam', 
+    component: Exam,
+    canActivate: [authGuard] 
+  },
   { path: '**', redirectTo: '/login' }
    
 ];
