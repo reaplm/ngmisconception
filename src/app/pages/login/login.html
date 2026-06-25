@@ -30,9 +30,9 @@
         </div>
         
         <!-- Submit Button -->
-        <button type="submit" 
+        <button type="submit" [disabled]="isLoading"
             class="flex w-full justify-center rounded-md bg-zinc-950 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-zinc-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-950 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200">
-            Login
+            {{ isLoading ? 'Loading...' : 'Login' }}
         </button>
 
         <!-- Actions Panel -->

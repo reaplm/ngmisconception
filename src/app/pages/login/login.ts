@@ -46,17 +46,18 @@ export class Login {
       password: this.loginData.password,
       rememberMe: this.loginData.rememberMe
     }).subscribe({
-      next: () => {
+      next: (res) => {
+        console.log('👉 SUCCESS: Inside component next block!', res); // Add this log
         this.isLoading = false;
         this.successMessage = 'Login successful! Redirecting to exam...';
         setTimeout(() => {
           this.router.navigate(['/exam']);
+
         }, 1500);
       },
       error: (error :any) => {
         this.isLoading = false;
         this.errorMessage = error?.message || 'Login failed. Please try again.';
-        console.error('Login error:', error);
       }
     });
   }
