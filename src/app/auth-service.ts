@@ -11,8 +11,9 @@ export interface LoginRequest {
 }
 
 export interface LoginResponse {
-  token: string;
-  user: {
+  access_token: string;
+  token_type: string;
+  user?: {
     id: string;
     email: string;
     last_login_at?: string;
@@ -39,12 +40,19 @@ export class AuthService {
         return this.http.post<LoginResponse>(`${this.apiUrl}/login`, credentials)
         .pipe(
             tap(response => {
-            if (response.token) {
+            if (response && response.access_token) {
                 // Store token and user data
                 const storage = credentials.rememberMe ? localStorage : sessionStorage;
-                storage.setItem(this.tokenKey, response.token);
-                storage.setItem(this.userKey, JSON.stringify(response.user));
+                storage.setItem(this.tokenKey, response.access_token);
                 this.isLoggedInSubject.next(true);
+                // Only store user data if the backend actually sent it
+                /*if (response.user) {
+                    storage.setItem(this.userKey, JSON.stringify(response.user));
+                } else {
+                    // Optional: Clear out any old lingering user session data
+                    storage.removeItem(this.userKey);
+                }*/
+                
             }
             }),
             catchError(this.handleError)
@@ -90,7 +98,7 @@ export class AuthService {
 
     private handleError(error: HttpErrorResponse): Observable<never> {
         let errorMessage = 'Login failed. Please try again.';
-        
+
         if (error.error instanceof ErrorEvent) {
             errorMessage = `Error: ${error.error.message}`;
         } 
