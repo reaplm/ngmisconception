@@ -3,6 +3,7 @@ import { Login } from './pages/login/login';
 import { AuthLayout } from './layouts/auth-layout/auth-layout';
 import { Exam } from './pages/exam/exam';
 import { authGuard } from './guards/auth-guard';
+import { Register } from './pages/register/register';
 
 export const routes: Routes = [
     {
@@ -12,6 +13,10 @@ export const routes: Routes = [
       { path: 'login', component: Login },
       { path: '', redirectTo: 'login', pathMatch: 'full' }
     ]
+  },
+  { 
+    path: 'register', 
+    component: Register,
   },
   { 
     path: 'exam', 
