@@ -17,6 +17,30 @@
   </nav>
 </header>
 
-<div class="exam-content">
-  
+<div class="exam-content space-y-4 max-w-3xl mx-auto p-6 ">
+  @for (q of questions; track q.id; let i = $index){
+    <div class="max-w-2xl px-8 py-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
+      <!-- Question text-->
+      <div class="flex items-center justify-between">
+          <span class="text-gray-600 dark:text-gray-400">{{ i + 1 }}. {{ q.question_text }}</span>
+      </div>
+
+      <div class="flex items-center justify-between mt-4 gap-5">
+        <input type="text" placeholder="Type short answer here..." 
+        class="flex-1 min-w-0 px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none 
+          focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition-all" />
+        <button 
+        type="button" 
+        class="whitespace-nowrap px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors cursor-pointer">
+        Submit
+      </button>
+      </div>
+    </div>
+  } @empty {
+    <!-- If you see this block on screen, your "this.questions" array is evaluated as 0 length -->
+    <div class="p-6 bg-amber-50 text-amber-800 rounded-xl text-center border border-amber-200">
+      No questions were received from the server.
+    </div>
+  }
+      
 </div>
