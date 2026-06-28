@@ -22,6 +22,9 @@ export class Exam implements OnInit{
   isLoading = true;
   errorMessage = '';
 
+  // Tracking index variable
+  currentQuestionIndex: number = 0;
+
   ngOnInit(): void {
     // Check if user is logged in
     if (!this.authService.isLoggedIn()) {
@@ -37,6 +40,21 @@ export class Exam implements OnInit{
     this.loadQuestions();
   }
 
+  // 2. Navigation Methods
+  goToNextQuestion(): void {
+    if (this.currentQuestionIndex < this.questions.length - 1) {
+      this.currentQuestionIndex++;
+      this.cdr.detectChanges(); // Force template update
+    }
+  }
+
+  goToPreviousQuestion(): void {
+    if (this.currentQuestionIndex > 0) {
+      this.currentQuestionIndex--;
+      this.cdr.detectChanges(); // Force template update
+    }
+  }
+  
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);
