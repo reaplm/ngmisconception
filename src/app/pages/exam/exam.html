@@ -37,12 +37,36 @@
               {{ activeQ.question_text }}
             </p>
             <div class="flex flex-col sm:flex-row items-stretch sm:items-center mt-4 gap-3">
-              <input type="text" placeholder="Type short answer here..." 
+              <input type="text" placeholder="Type short answer here..." #userAnswer
                 class="flex-1 min-w-0 px-4 py-2.5 text-sm bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-600 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition-all" />
-               <button type="button" class="bg-[#fcd116] group flex items-center gap-3 text-slate-900 text-xs md:text-sm font-bold pl-5 pr-5 py-2 rounded-full shadow-lg hover:text-white transition-all duration-300">
+               <button type="button" (click)="onSubmitAnswer(activeQ.id, userAnswer)"
+                  class="bg-[#fcd116] group flex items-center gap-3 text-slate-900 text-xs md:text-sm font-bold pl-5 pr-5 py-2 rounded-full shadow-lg hover:text-white transition-all duration-300">
                 Submit
               </button>
             </div>
+            <!-- After submit show these-->
+            @if (submissionFeedback && submissionFeedback.detected && submissionFeedback.misconception) {
+              <div class="mt-4 p-4 bg-rose-50 border border-rose-200 rounded-xl animate-fade-in">
+                <div class="flex items-start gap-3">
+                  <!-- High-contrast warning indicator badge -->
+                  <span class="flex-shrink-0 mt-0.5 px-2 py-0.5 bg-rose-100 text-rose-800 text-[10px] font-bold uppercase rounded-md tracking-wider">
+                    Misconception Detected
+                  </span>
+                  
+                  <div class="flex-1">
+                    <!-- Render the exact text parameter coming from your JSON payload -->
+                    <p class="text-sm font-medium text-rose-900 leading-relaxed">
+                      {{ submissionFeedback.misconception.text }}
+                    </p>
+                    <!-- Optional confidence tracking metadata string context -->
+                    <p class="text-[11px] text-rose-500 mt-1">
+                      Confidence Score: {{ (submissionFeedback.highest_score * 100).toFixed(1) }}%
+                    </p>
+                  </div>
+                </div>
+              </div>
+            }
+
         </div>
       </div>
 

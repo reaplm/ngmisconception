@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { QuestionService } from '../../services/question-service';
 import { Question } from '../../models/question';
 import { CommonModule } from '@angular/common';
+import { SubmissionResult } from '../../models/submission-result';
 
 @Component({
   selector: 'app-exam',
@@ -24,6 +25,9 @@ export class Exam implements OnInit{
 
   // Tracking index variable
   currentQuestionIndex: number = 0;
+
+  // Submit answer
+  submissionFeedback: SubmissionResult | null = null;
 
   ngOnInit(): void {
     // Check if user is logged in
@@ -74,6 +78,20 @@ export class Exam implements OnInit{
         this.errorMessage = 'Failed to load exam questions. Please try again.';
         this.isLoading = false;
       }
+    });
+  }
+
+  onSubmitAnswer(questionId: number, inputElement: HTMLInputElement): void {
+    const answerValue = inputElement.value.trim();
+    if (!answerValue) return;
+
+    this.questionService.submitAnswer(questionId, answerValue).subscribe({
+      next: (response: SubmissionResult) => {
+        // Save the backend object containing your payload
+        this.submissionFeedback = response;
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error(err)
     });
   }
 }
