@@ -20,6 +20,7 @@ export class Exam implements OnInit{
   
   userEmail: string = '';
   questions: Question[] = [];
+  questionIds: number[] = [9, 11, 22, 32, 38]
   isLoading = true;
   errorMessage = '';
 
@@ -41,7 +42,7 @@ export class Exam implements OnInit{
     this.userEmail = user?.email || 'User';
 
     //Fetch exam questions
-    this.loadQuestions();
+    this.loadQuestionsByIds(this.questionIds);
   }
 
   // 2. Navigation Methods
@@ -64,8 +65,25 @@ export class Exam implements OnInit{
     this.router.navigate(['/login']);
   }
 
-  loadQuestions(): void {
-    this.questionService.getQuestions().subscribe({
+  loadAllQuestions(): void {
+    this.questionService.getAllQuestions().subscribe({
+      next: (response :any) => {
+        console.error('Response:', response);
+        this.questions = response;
+        this.isLoading = false;
+
+        this.cdr.detectChanges();
+      },
+      error: (error :any) => {
+        console.error('Database fetch error:', error);
+        this.errorMessage = 'Failed to load exam questions. Please try again.';
+        this.isLoading = false;
+      }
+    });
+  }
+
+  loadQuestionsByIds(questionsIds :number[]): void {
+    this.questionService.getQuestionsByIds(questionsIds).subscribe({
       next: (response :any) => {
         console.error('Response:', response);
         this.questions = response;
