@@ -12,9 +12,11 @@ export class QuestionService {
     private apiUrl = 'http://localhost:8000/api/v1';
 
     // Fetches the entire collection array from your database
-    getAllQuestions(limit: number = 5): Observable<Question[]> {
+    getAllQuestions(include_misconception: boolean = false,limit: number = 5): Observable<Question[]> {
         // Dynamically append query variables (?limit=5)
-        const params = new HttpParams().set('limit', limit.toString());
+        const params = new HttpParams()
+            .set('limit', limit.toString())
+            .set('include_misconceptions', include_misconception);
 
         return this.http.get<Question[]>(this.apiUrl + '/questions', {params});
     }
