@@ -66,6 +66,23 @@
                 </div>
               </div>
             }
+            @else if (submissionFeedback && !submissionFeedback.detected){
+              <div class="mt-4 p-4 bg-emerald-50 border border-emerald-200 rounded-xl animate-fade-in">
+                <div class="flex items-start gap-3">
+                  <!-- High-contrast warning indicator badge -->
+                  <span class="flex-shrink-0 mt-0.5 px-2 py-0.5 bg-emerald-100 text-lime-800 text-[10px] font-bold uppercase rounded-md tracking-wider">
+                    Best Answer
+                  </span>
+                  
+                  <div class="flex-1">
+                    <!-- Render the exact text parameter coming from your JSON payload -->
+                    <p class="text-sm font-medium text-emerald-500 leading-relaxed">
+                      {{ activeQ.best_answer }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            }
 
         </div>
       </div>
