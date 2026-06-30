@@ -23,6 +23,10 @@ export const routes: Routes = [
     component: Exam,
     canActivate: [authGuard] 
   },
+  {
+    path: 'question-review',
+    loadComponent: () => import('./pages/question-review/question-review').then(m => m.QuestionReview) 
+  },
   { path: '**', redirectTo: '/login' }
    
 ];

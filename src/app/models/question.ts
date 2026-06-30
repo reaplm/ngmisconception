@@ -3,5 +3,11 @@ export interface Question {
     question_text: string;
     best_answer: string;
     category_id: number;
-    //misconceptions?: string[];
+    misconceptions?: Misconception[];
+}
+
+export interface Misconception {
+  id: number;
+  misconception_text: string;
+  question_id: number;
 }

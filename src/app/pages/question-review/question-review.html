@@ -1,0 +1,146 @@
+<div class="min-h-screen bg-slate-50 py-8 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-4xl mx-auto">
+    
+    <!-- Top Action Heading Row Wrapper -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-slate-200 pb-5 mb-6 gap-4">
+      <div>
+        <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Question Bank & Misconceptions</h1>
+        <p class="text-sm text-slate-500 mt-1">Reviewing questions and their known misconceptions</p>
+      </div>
+      <button 
+        type="button" 
+        (click)="goBackToExam()"
+        class="inline-flex items-center bg-[#fcd116] group flex items-center gap-3 text-slate-900 text-xs md:text-sm font-bold pl-5 pr-5 py-2 rounded-full shadow-lg hover:text-white transition-all duration-300 cursor-pointer" >
+        Back to Exam
+      </button>
+    </div>
+
+    <!-- Async Status Layout Indicators -->
+    @if (isLoading) {
+      <div class="flex flex-col items-center justify-center py-16 space-y-3">
+        <div class="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
+        <p class="text-sm text-slate-500">Mapping database entries...</p>
+      </div>
+    }
+
+    @if (errorMessage) {
+      <div class="p-4 bg-rose-50 border border-rose-200 text-rose-700 rounded-xl text-sm font-medium">
+        {{ errorMessage }}
+      </div>
+    }
+
+    <!-- Content Collection Loop Layout -->
+    @if (!isLoading && !errorMessage) {
+      <div class="space-y-4">
+        
+        <!-- CHANGED SOURCE TO READ THE PAGINATED ARRAY SLICE -->
+        @for (q of paginatedQuestions; track q.id; let i = $index) {
+          <div class="bg-white border border-slate-200 rounded-xl shadow-xs overflow-hidden">
+            
+            <!-- Card Clickable Interactive Header Row -->
+            <div (click)="toggleExpand(q.id)" class="p-5 flex items-start justify-between gap-4 cursor-pointer hover:bg-slate-50/50 transition-colors">
+              <div class="space-y-1 flex-1">
+                <div class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#eab308]">
+                  <span>Question #{{ q.id }}</span>
+                 <!-- <span class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md text-[10px]">Cat ID: {{ q.category_id }}</span> -->
+                </div>
+                <h3 class="text-base font-semibold text-slate-800 leading-snug">
+                  {{ q.question_text }}
+                </h3>
+              </div>
+
+              <span class="text-slate-400 mt-1 flex-shrink-0 transition-transform duration-200" [class.rotate-180]="expandedQuestions[q.id]">
+                <svg xmlns="http://w3.org" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+              </span>
+            </div>
+
+            <!-- Expandable Detailed Sub-panel Block -->
+            @if (expandedQuestions[q.id]) {
+              <div class="bg-slate-50/50 border-t border-slate-100 p-5 space-y-4">
+                <div class="bg-emerald-50/60 border border-emerald-100 rounded-lg p-3">
+                  <span class="text-xs font-bold text-emerald-800 uppercase tracking-wide block mb-1">Expected Best Answer</span>
+                  <p class="text-sm font-medium text-emerald-900">{{ q.best_answer }}</p>
+                </div>
+
+                <div>
+                  <span class="text-xs font-bold text-slate-500 uppercase tracking-wide block mb-2">Known Database Misconceptions</span>
+                  @if (q.misconceptions && q.misconceptions.length > 0) {
+                    <div class="space-y-2">
+                      @for (m of q.misconceptions; track m.id) {
+                        <div class="flex items-start gap-3 p-3 bg-rose-50/50 border border-rose-100 rounded-lg">
+                          <span class="mt-0.5 px-1.5 py-0.5 bg-rose-100 text-rose-800 text-[10px] font-bold uppercase rounded-sm">ID: {{ m.id }}</span>
+                          <p class="text-sm font-medium text-rose-900 leading-relaxed">{{ m.misconception_text }}</p>
+                        </div>
+                      }
+                    </div>
+                  } @else {
+                    <p class="text-xs text-slate-400 italic pl-1">No documented misconceptions for this item.</p>
+                  }
+                </div>
+              </div>
+            }
+
+          </div>
+        } @empty {
+          <div class="text-center py-12 bg-white rounded-xl border border-slate-200 text-slate-500">
+            <p class="font-medium">No records found inside your database storage mapping layout.</p>
+          </div>
+        }
+
+        <!-- PROGRESSIVE FOOTER PAGER COMPONENT ROW -->
+        @if (questions.length > 0) {
+          <div class="flex items-center justify-between border-t border-slate-200 pt-4 px-2 mt-6">
+            
+            <!-- Metadata counter text indicator -->
+            <div class="text-sm text-slate-500">
+              Page <span class="font-semibold text-slate-800">{{ currentPage }}</span> of <span class="font-semibold text-slate-800">{{ totalPages }}</span>
+            </div>
+
+            <!-- Action buttons container context -->
+            <div class="flex gap-2">
+  <!-- Previous Button -->
+  <button type="button" 
+    (click)="goToPage(currentPage - 1)"
+    [disabled]="currentPage === 1"
+    class="bg-white group flex items-center gap-3 text-slate-900 text-xs md:text-sm font-bold pl-2 pr-5 py-2 rounded-full cursor-pointer transition-all disabled:opacity-40 disabled:pointer-events-none">
+    
+    <!-- Yellow Arrow Circle Layer -->
+    <div class="bg-[#fcd116] w-8 h-8 rounded-full flex items-center justify-center group-hover:-translate-x-1 transition-transform duration-300">
+      <svg class="w-4 h-4 stroke-slate-900 fill-none" stroke-width="2.5" viewBox="0 0 24 24">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 5 5 12 12 19"></polyline>
+      </svg>        
+    </div>
+    
+    <!-- Text Label Layer: Instead of changing padding on hover, we translate the text -->
+    <span class="group-hover:translate-x-1 transition-transform duration-300">Previous</span>
+  </button>
+
+  <!-- Next Button -->
+  <button type="button" 
+    (click)="goToPage(currentPage + 1)"
+    [disabled]="currentPage === totalPages"
+    class="bg-white group flex items-center gap-3 text-slate-900 text-xs md:text-sm font-bold pl-5 pr-2 py-2 rounded-full cursor-pointer transition-all disabled:opacity-40 disabled:pointer-events-none">
+    
+    <!-- Text Label Layer -->
+    <span class="group-hover:-translate-x-1 transition-transform duration-300">Next</span>
+    
+    <!-- Yellow Arrow Circle Layer -->
+    <div class="bg-[#fcd116] w-8 h-8 rounded-full flex items-center justify-center group-hover:translate-x-1 transition-transform duration-300">
+      <svg class="w-4 h-4 stroke-slate-900 fill-none" stroke-width="2.5" viewBox="0 0 24 24">
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+        <polyline points="12 5 19 12 12 19"></polyline>
+      </svg>
+    </div>
+  </button>
+</div>
+
+
+          </div>
+        }
+
+      </div>
+    }
+
+  </div>
+</div>
