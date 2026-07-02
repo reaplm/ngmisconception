@@ -4,6 +4,8 @@ import { AuthLayout } from './layouts/auth-layout/auth-layout';
 import { Exam } from './pages/exam/exam';
 import { authGuard } from './guards/auth-guard';
 import { Register } from './pages/register/register';
+import { AdminLayout } from './layouts/admin-layout/admin-layout';
+import { QuestionReview } from './pages/question-review/question-review';
 
 export const routes: Routes = [
     {
@@ -24,8 +26,17 @@ export const routes: Routes = [
     canActivate: [authGuard] 
   },
   {
-    path: 'question-review',
-    loadComponent: () => import('./pages/question-review/question-review').then(m => m.QuestionReview) 
+    path: '',
+    component: AdminLayout,
+    canActivate: [authGuard],
+    children: [
+      { path: 'question-review', component: QuestionReview },
+      // Add more pages here
+      // { path: 'dashboard', component: DashboardComponent },
+      // { path: 'profile', component: ProfileComponent },
+      // { path: 'settings', component: SettingsComponent },
+      { path: '', redirectTo: 'review', pathMatch: 'full' }
+    ]
   },
   { path: '**', redirectTo: '/login' }
    
