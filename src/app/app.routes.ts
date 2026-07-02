@@ -20,17 +20,13 @@ export const routes: Routes = [
     path: 'register', 
     component: Register,
   },
-  { 
-    path: 'exam', 
-    component: Exam,
-    canActivate: [authGuard] 
-  },
   {
     path: '',
     component: AdminLayout,
     canActivate: [authGuard],
     children: [
       { path: 'question-review', component: QuestionReview },
+      { path: 'exam', component: Exam },
       // Add more pages here
       // { path: 'dashboard', component: DashboardComponent },
       // { path: 'profile', component: ProfileComponent },
