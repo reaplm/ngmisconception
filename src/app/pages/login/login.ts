@@ -51,7 +51,7 @@ export class Login {
         this.isLoading = false;
         this.successMessage = 'Login successful! Redirecting to exam...';
         setTimeout(() => {
-          this.router.navigate(['/exam']);
+          this.router.navigate(['/question-review']);
 
         }, 1500);
       },
