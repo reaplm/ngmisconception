@@ -16,7 +16,7 @@
           <div 
             (click)="selectQuestion(q.id)"
             class="w-9 h-9 rounded-full bg-[#7e1891] text-white font-bold text-sm flex items-center 
-              justify-center flex-shrink-0 cursor-pointer misconception-item"
+              justify-center flex-shrink-0 cursor-pointer misconception-item hover:bg-[#fcd116] transition"
               [class]="selectedQuestion === q.id ? 'bg-[#fcd116]' : 'bg-[#7e1891]'"
               >
             {{ q.id }}
@@ -35,7 +35,7 @@
           <div 
             (click)="selectQuestion(q.id)"
             class="w-9 h-9 rounded-full bg-[#4d2bbc] text-white font-bold text-sm flex items-center 
-              justify-center flex-shrink-0 cursor-pointer misconception-item"
+              justify-center flex-shrink-0 cursor-pointer misconception-item hover:bg-[#fcd116] transition"
               [class]="selectedQuestion === q.id ? 'bg-[#fcd116]' : 'bg-[#7e1891]'"
               >
             {{ q.id }}
