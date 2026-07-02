@@ -1,15 +1,16 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { Question } from '../../models/question';
 import { Router } from '@angular/router';
 import { QuestionService } from '../../services/question-service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-question-review',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './question-review.html',
   styleUrl: './question-review.css',
 })
-export class QuestionReview {
+export class QuestionReview implements OnInit{
   private questionService = inject(QuestionService);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
@@ -20,10 +21,16 @@ export class QuestionReview {
 
   // Pagination Tracking Parameters
   currentPage: number = 1;
-  pageSize: number = 5; // Forces 5 items per display panel
+  pageSize: number = 6; // Forces 5 items per display panel
+  selectedQuestionId: number | null = null;
   
   // Track open/closed states for individual cards using an index map
   expandedQuestions: { [key: number]: boolean } = {};
+
+  selectedQuestion: number | null = null;
+  isLoadingMisconceptions = false;
+  misconceptionsError: string | null = null;
+
 
   ngOnInit(): void {
     this.loadAllQuestions();
@@ -56,6 +63,23 @@ export class QuestionReview {
     return Math.ceil(this.questions.length / this.pageSize) || 1;
   }
 
+  // Method to select question
+  selectQuestion(questionId: number): void {
+    this.selectedQuestion = questionId;
+    this.misconceptionsError = null;
+    
+    const question = this.questions.find(q => q.id === questionId);
+    if (question && (!question.misconceptions || question.misconceptions.length === 0)) {
+      this.fetchMisconceptions(questionId);
+    }
+  }
+
+  // Method to fetch misconceptions
+  fetchMisconceptions(questionId: number): void {
+    this.isLoadingMisconceptions = true;
+    this.misconceptionsError = null;
+  }
+
   // Navigation Pager Core Actions
   goToPage(pageNumber: number): void {
     if (pageNumber >= 1 && pageNumber <= this.totalPages) {
@@ -65,9 +89,13 @@ export class QuestionReview {
     }
   }
 
-  toggleExpand(questionId: number): void {
-    this.expandedQuestions[questionId] = !this.expandedQuestions[questionId];
-    this.cdr.detectChanges();
+
+  getSelectedQuestion(): Question | undefined {
+    return this.questions.find(q => q.id === this.selectedQuestionId);
+  }
+
+  isQuestionSelected(questionId: number): boolean {
+    return this.selectedQuestionId === questionId;
   }
 
   goBackToExam(): void {
