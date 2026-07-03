@@ -15,9 +15,9 @@
         <div class="flex items-start gap-3">
           <div 
             (click)="selectQuestion(q.id)"
-            class="w-9 h-9 rounded-full bg-[#7e1891] text-white font-bold text-sm flex items-center 
-              justify-center flex-shrink-0 cursor-pointer misconception-item hover:bg-[#fcd116] transition"
-              [class]="selectedQuestion === q.id ? 'bg-[#fcd116]' : 'bg-[#7e1891]'"
+            class="w-9 h-9 rounded-full bg-[#322885] text-white font-bold text-sm flex items-center 
+              justify-center flex-shrink-0 cursor-pointer misconception-item hover:bg-[#F96167] transition"
+              [class]="selectedQuestion === q.id ? 'bg-[#F96167]' : 'bg-[#7e1891]'"
               >
             {{ q.id }}
           </div>
@@ -34,9 +34,9 @@
         <div class="flex items-start gap-3">
           <div 
             (click)="selectQuestion(q.id)"
-            class="w-9 h-9 rounded-full bg-[#4d2bbc] text-white font-bold text-sm flex items-center 
-              justify-center flex-shrink-0 cursor-pointer misconception-item hover:bg-[#fcd116] transition"
-              [class]="selectedQuestion === q.id ? 'bg-[#fcd116]' : 'bg-[#7e1891]'"
+            class="w-9 h-9 rounded-full bg-[#322885] text-white font-bold text-sm flex items-center 
+              justify-center flex-shrink-0 cursor-pointer misconception-item hover:bg-[#F96167] transition"
+              [class]="selectedQuestion === q.id ? 'bg-[#F96167]' : 'bg-[#7e1891]'"
               >
             {{ q.id }}
           </div>
@@ -66,7 +66,7 @@
           (click)="goToPage(currentPage - 1)"
           [disabled]="currentPage === 1"
           class=" group flex items-center gap-3 text-slate-900 text-xs md:text-sm font-bold pl-2 pr-5 py-2 hover:pl-4 transition-all duration-300">
-          <div class="bg-[#fcd116] w-8 h-8 rounded-full flex items-center justify-center group-hover:-translate-x-1 transition-transform">
+          <div class="bg-[#FCE77D] w-8 h-8 rounded-full flex items-center justify-center group-hover:-translate-x-1 transition-transform">
             <svg class="w-4 h-4 stroke-slate-900 fill-none" stroke-width="2.5" viewBox="0 0 24 24">
               <line x1="19" y1="12" x2="5" y2="12"></line>
               <polyline points="12 5 5 12 12 19"></polyline>
@@ -79,7 +79,7 @@
           (click)="goToPage(currentPage + 1)"
           [disabled]="currentPage === totalPages"
           class=" group flex items-center gap-3 text-slate-900 text-xs md:text-sm font-bold pl-5 pr-2 py-2 hover:pr-4 transition-all duration-300">
-          <div class="bg-[#fcd116]  w-8 h-8 rounded-full flex items-center justify-center group-hover:translate-x-1 transition-transform">
+          <div class="bg-[#FCE77D]  w-8 h-8 rounded-full flex items-center justify-center group-hover:translate-x-1 transition-transform">
             <svg class="w-4 h-4 stroke-slate-900 fill-none" stroke-width="2.5" viewBox="0 0 24 24">
               <line x1="5" y1="12" x2="19" y2="12"></line>
               <polyline points="12 5 19 12 12 19"></polyline>
@@ -95,7 +95,7 @@
       @if (q.id === selectedQuestion) {
         <div class="p-5 space-y-4 max-h-[500px] overflow-y-auto">
           <!-- Best Answer -->
-          <div class="bg-emerald-100 border border-emerald-100 rounded-lg p-3 flex-shrink-0">
+          <div class="bg-white border border-white rounded-lg p-3 flex-shrink-0">
             <span class="text-xs font-bold text-emerald-800 uppercase tracking-wide mb-1">Best Answer: </span>
             <span class="text-sm font-medium text-emerald-900">{{ q.best_answer }}</span>
           </div>
