@@ -24,7 +24,7 @@
         <input type="text" placeholder="Type short answer here..." #userAnswer
           class="flex-1 min-w-0 px-4 py-2.5 text-sm bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-600 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition-all" />
         <button type="button" (click)="onSubmitAnswer(activeQ.id, userAnswer)"
-          class="bg-[#fcd116] group flex items-center gap-3 text-slate-900 text-xs md:text-sm font-bold pl-5 pr-5 py-2 rounded-full shadow-lg hover:text-white transition-all duration-300">
+          class="bg-[#BDA6CE] group flex items-center gap-3 text-slate-900 text-xs md:text-sm font-bold pl-5 pr-5 py-2 rounded-full shadow-lg hover:text-white transition-all duration-300">
           Submit
         </button>
       </div>
@@ -69,7 +69,7 @@
       <button type="button" 
         (click)="goToPreviousQuestion()"
         [disabled]="currentQuestionIndex === 0"
-        class="bg-[#fcd116] group flex items-center gap-3 text-slate-900 text-xs md:text-sm font-bold pl-2 pr-5 py-2 rounded-full shadow-lg hover:pl-4 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+        class="bg-[#BDA6CE] group flex items-center gap-3 text-slate-900 text-xs md:text-sm font-bold pl-2 pr-5 py-2 rounded-full shadow-lg hover:pl-4 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
         <div class="bg-white w-8 h-8 rounded-full flex items-center justify-center group-hover:-translate-x-1 transition-transform">
           <svg class="w-4 h-4 stroke-slate-900 fill-none" stroke-width="2.5" viewBox="0 0 24 24">
             <line x1="19" y1="12" x2="5" y2="12"></line>
@@ -83,7 +83,7 @@
       <button type="button" 
         (click)="goToNextQuestion()"
         [disabled]="currentQuestionIndex === questions.length - 1"
-        class="bg-[#fcd116] group flex items-center gap-3 text-slate-900 text-xs md:text-sm font-bold pl-5 pr-2 py-2 rounded-full shadow-lg hover:pr-4 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+        class="bg-[#BDA6CE] group flex items-center gap-3 text-slate-900 text-xs md:text-sm font-bold pl-5 pr-2 py-2 rounded-full shadow-lg hover:pr-4 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
         <span>Next</span>
         <div class="bg-white w-8 h-8 rounded-full flex items-center justify-center group-hover:translate-x-1 transition-transform">
           <svg class="w-4 h-4 stroke-slate-900 fill-none" stroke-width="2.5" viewBox="0 0 24 24">
