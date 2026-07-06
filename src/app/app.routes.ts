@@ -6,6 +6,8 @@ import { authGuard } from './guards/auth-guard';
 import { Register } from './pages/register/register';
 import { AdminLayout } from './layouts/admin-layout/admin-layout';
 import { QuestionReview } from './pages/question-review/question-review';
+import { Categories } from './pages/categories/categories';
+import { Misconceptions } from './pages/misconceptions/misconceptions';
 
 export const routes: Routes = [
     {
@@ -27,10 +29,8 @@ export const routes: Routes = [
     children: [
       { path: 'question-review', component: QuestionReview },
       { path: 'exam', component: Exam },
-      // Add more pages here
-      // { path: 'dashboard', component: DashboardComponent },
-      // { path: 'profile', component: ProfileComponent },
-      // { path: 'settings', component: SettingsComponent },
+      { path: 'categories', component: Categories },
+      { path: 'misconceptions', component: Misconceptions },
       { path: '', redirectTo: 'review', pathMatch: 'full' }
     ]
   },
