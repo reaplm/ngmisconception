@@ -1,116 +1,113 @@
-
-
-    <!-- Handle Different View States Dynamically Inside the Content Zone -->
-    @if (!isLoading && !errorMessage && questions.length > 0) {
-      @let activeQ = questions[currentQuestionIndex];
+<!-- Handle Different View States Dynamically Inside the Content Zone -->
+@if (!isLoading && !errorMessage && questions.length > 0) {
+  @let activeQ = questions[currentQuestionIndex];
+  
+  <!-- Main Container - Full height flex column -->
+  <div class="flex-1 flex flex-col items-center justify-center w-full h-full px-4 py-8">
+    
+    <!-- Question Card Container - Centered -->
+    <div class="w-full max-w-2xl px-8 py-6 bg-white rounded-2xl shadow-xl dark:bg-gray-800 border border-white/10">
       
-      <!-- 2. Interactive Midground Question Card Container  -->
-      <div class="flex-1 flex items-center justify-center z-20 w-full px-4 my-4">
-        <div class="w-full max-w-2xl px-8 py-6 bg-white rounded-2xl shadow-xl dark:bg-gray-800 border border-white/10">
-            <!-- Question text-->
-            <div class="flex items-center justify-between">
-                <span class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Question {{currentQuestionIndex + 1}} of {{questions.length}}
-                </span>
-            </div>
-            <p class="text-xl font-bold text-slate-800 dark:text-white mt-2 mb-4">
-              {{ activeQ.question_text }}
-            </p>
-            <div class="flex flex-col sm:flex-row items-stretch sm:items-center mt-4 gap-3">
-              <input type="text" placeholder="Type short answer here..." #userAnswer
-                class="flex-1 min-w-0 px-4 py-2.5 text-sm bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-600 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition-all" />
-               <button type="button" (click)="onSubmitAnswer(activeQ.id, userAnswer)"
-                  class="bg-[#fcd116] group flex items-center gap-3 text-slate-900 text-xs md:text-sm font-bold pl-5 pr-5 py-2 rounded-full shadow-lg hover:text-white transition-all duration-300">
-                Submit
-              </button>
-            </div>
-            <!-- After submit show these-->
-            @if (submissionFeedback && submissionFeedback.detected && submissionFeedback.misconception) {
-              <div class="mt-4 p-4 bg-rose-50 border border-rose-200 rounded-xl animate-fade-in">
-                <div class="flex items-start gap-3">
-                  <!-- High-contrast warning indicator badge -->
-                  <span class="flex-shrink-0 mt-0.5 px-2 py-0.5 bg-rose-100 text-rose-800 text-[10px] font-bold uppercase rounded-md tracking-wider">
-                    Misconception Detected
-                  </span>
-                  
-                  <div class="flex-1">
-                    <!-- Render the exact text parameter coming from your JSON payload -->
-                    <p class="text-sm font-medium text-rose-900 leading-relaxed">
-                      {{ submissionFeedback.misconception.text }}
-                    </p>
-                    <!-- Optional confidence tracking metadata string context -->
-                    <p class="text-[11px] text-rose-500 mt-1">
-                      Confidence Score: {{ (submissionFeedback.highest_score * 100).toFixed(1) }}%
-                    </p>
-                  </div>
-                </div>
-              </div>
-            }
-            @else if (submissionFeedback && !submissionFeedback.detected){
-              <div class="mt-4 p-4 bg-emerald-50 border border-emerald-200 rounded-xl animate-fade-in">
-                <div class="flex items-start gap-3">
-                  <!-- High-contrast warning indicator badge -->
-                  <span class="flex-shrink-0 mt-0.5 px-2 py-0.5 bg-emerald-100 text-lime-800 text-[10px] font-bold uppercase rounded-md tracking-wider">
-                    Best Answer
-                  </span>
-                  
-                  <div class="flex-1">
-                    <!-- Render the exact text parameter coming from your JSON payload -->
-                    <p class="text-sm font-medium text-emerald-500 leading-relaxed">
-                      {{ activeQ.best_answer }}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            }
-
-        </div>
+      <!-- Question text -->
+      <div class="flex items-center justify-between">
+        <span class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+          Question {{currentQuestionIndex + 1}} of {{questions.length}}
+        </span>
       </div>
-
-      <!-- 3. Floating Overlay Navigation Controls -->
-      <div class="relative z-30 flex items-end justify-between w-full mt-auto">
-        <!-- Bottom-Left Rounded "Previous" CTA Pill (Fixed Hover & padding) -->
-        <button type="button" 
-          (click)="goToPreviousQuestion()"
-          [disabled]="currentQuestionIndex === 0"
-          class="bg-[#fcd116] group flex items-center gap-3 text-slate-900 text-xs md:text-sm font-bold pl-2 pr-5 py-2 rounded-full shadow-lg hover:pl-4 transition-all duration-300">
-          <div class="bg-white w-8 h-8 rounded-full flex items-center justify-center group-hover:-translate-x-1 transition-transform">
-            <svg class="w-4 h-4 stroke-slate-900 fill-none" stroke-width="2.5" viewBox="0 0 24 24">
-              <line x1="19" y1="12" x2="5" y2="12"></line>
-              <polyline points="12 5 5 12 12 19"></polyline>
-            </svg>        
-          </div>
-          <span>Previous</span>
-        </button>
-
-        <!-- Bottom-Right "Next" CTA Pill -->
-        <button type="button" 
-          (click)="goToNextQuestion()"
-          [disabled]="currentQuestionIndex === questions.length - 1"
-          class="bg-[#fcd116] group flex items-center gap-3 text-slate-900 text-xs md:text-sm font-bold pl-5 pr-2 py-2 rounded-full shadow-lg hover:pr-4 transition-all duration-300">
-          <span>Next</span>
-          <div class="bg-white w-8 h-8 rounded-full flex items-center justify-center group-hover:translate-x-1 transition-transform">
-            <svg class="w-4 h-4 stroke-slate-900 fill-none" stroke-width="2.5" viewBox="0 0 24 24">
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
-          </div>
+      
+      <p class="text-xl font-bold text-slate-800 dark:text-white mt-2 mb-4">
+        {{ activeQ.question_text }}
+      </p>
+      
+      <!-- Input and Submit -->
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-center mt-4 gap-3">
+        <input type="text" placeholder="Type short answer here..." #userAnswer
+          class="flex-1 min-w-0 px-4 py-2.5 text-sm bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-600 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition-all" />
+        <button type="button" (click)="onSubmitAnswer(activeQ.id, userAnswer)"
+          class="bg-[#fcd116] group flex items-center gap-3 text-slate-900 text-xs md:text-sm font-bold pl-5 pr-5 py-2 rounded-full shadow-lg hover:text-white transition-all duration-300">
+          Submit
         </button>
       </div>
-
-    } @else if (isLoading) {
-      <!-- Centered Loader Box (High contrast text) -->
-      <div class="flex-1 flex flex-col items-center justify-center text-white gap-3">
-        <div class="w-8 h-8 border-4 border-white/30 border-t-white rounded-full animate-spin"></div>
-        <p class="text-sm font-medium tracking-wide">Loading exam setup...</p>
-      </div>
-    } @else {
-      <!-- Fallback Error/Empty Box (Styled to match the green frame) -->
-      <div class="flex-1 flex items-center justify-center p-8">
-        <div class="text-center max-w-md p-8 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 text-white shadow-xl">
-          <p class="font-semibold text-lg">No Questions Available</p>
-          <p class="text-white/80 text-sm mt-1">Please reach out to your instructor or check your connection parameters.</p>
+      
+      <!-- After submit show these -->
+      @if (submissionFeedback && submissionFeedback.detected && submissionFeedback.misconception) {
+        <div class="mt-4 p-4 bg-rose-50 border border-rose-200 rounded-xl animate-fade-in">
+          <div class="flex items-start gap-3">
+            <span class="flex-shrink-0 mt-0.5 px-2 py-0.5 bg-rose-100 text-rose-800 text-[10px] font-bold uppercase rounded-md tracking-wider">
+              Misconception Detected
+            </span>
+            <div class="flex-1">
+              <p class="text-sm font-medium text-rose-900 leading-relaxed">
+                {{ submissionFeedback.misconception.text }}
+              </p>
+              <p class="text-[11px] text-rose-500 mt-1">
+                Confidence Score: {{ (submissionFeedback.highest_score * 100).toFixed(1) }}%
+              </p>
+            </div>
+          </div>
         </div>
-      </div>
-    }
+      }
+      @else if (submissionFeedback && !submissionFeedback.detected){
+        <div class="mt-4 p-4 bg-emerald-50 border border-emerald-200 rounded-xl animate-fade-in">
+          <div class="flex items-start gap-3">
+            <span class="flex-shrink-0 mt-0.5 px-2 py-0.5 bg-emerald-100 text-lime-800 text-[10px] font-bold uppercase rounded-md tracking-wider">
+              Best Answer
+            </span>
+            <div class="flex-1">
+              <p class="text-sm font-medium text-emerald-500 leading-relaxed">
+                {{ activeQ.best_answer }}
+              </p>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
 
+    <!-- Navigation Controls - Centered below card -->
+    <div class="flex items-center justify-between gap-4 mt-6 w-full max-w-2xl">
+      <!-- Previous Button -->
+      <button type="button" 
+        (click)="goToPreviousQuestion()"
+        [disabled]="currentQuestionIndex === 0"
+        class="bg-[#fcd116] group flex items-center gap-3 text-slate-900 text-xs md:text-sm font-bold pl-2 pr-5 py-2 rounded-full shadow-lg hover:pl-4 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+        <div class="bg-white w-8 h-8 rounded-full flex items-center justify-center group-hover:-translate-x-1 transition-transform">
+          <svg class="w-4 h-4 stroke-slate-900 fill-none" stroke-width="2.5" viewBox="0 0 24 24">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 5 5 12 12 19"></polyline>
+          </svg>        
+        </div>
+        <span>Previous</span>
+      </button>
+
+      <!-- Next Button -->
+      <button type="button" 
+        (click)="goToNextQuestion()"
+        [disabled]="currentQuestionIndex === questions.length - 1"
+        class="bg-[#fcd116] group flex items-center gap-3 text-slate-900 text-xs md:text-sm font-bold pl-5 pr-2 py-2 rounded-full shadow-lg hover:pr-4 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+        <span>Next</span>
+        <div class="bg-white w-8 h-8 rounded-full flex items-center justify-center group-hover:translate-x-1 transition-transform">
+          <svg class="w-4 h-4 stroke-slate-900 fill-none" stroke-width="2.5" viewBox="0 0 24 24">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </div>
+      </button>
+    </div>
+
+  </div>
+
+} @else if (isLoading) {
+  <!-- Centered Loader Box -->
+  <div class="flex-1 flex flex-col items-center justify-center text-white gap-3">
+    <div class="w-8 h-8 border-4 border-white/30 border-t-white rounded-full animate-spin"></div>
+    <p class="text-sm font-medium tracking-wide">Loading exam setup...</p>
+  </div>
+} @else {
+  <!-- Fallback Error/Empty Box -->
+  <div class="flex-1 flex items-center justify-center p-8">
+    <div class="text-center max-w-md p-8 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 text-white shadow-xl">
+      <p class="font-semibold text-lg">No Questions Available</p>
+      <p class="text-white/80 text-sm mt-1">Please reach out to your instructor or check your connection parameters.</p>
+    </div>
+  </div>
+}
