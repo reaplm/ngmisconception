@@ -18,6 +18,13 @@ export class AdminLayout {
     this.userEmail = user?.email || 'User';
   }
 
+  // Flag tracking the open/closed state of exam submenu
+  isExamPanelOpen: boolean = false; 
+
+  // Toggle function executed on user click
+  toggleExamPanel(): void {
+    this.isExamPanelOpen = !this.isExamPanelOpen;
+  }
 
   logout(): void {
     this.authService.logout();
