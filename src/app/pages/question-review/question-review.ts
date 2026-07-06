@@ -21,8 +21,8 @@ export class QuestionReview implements OnInit{
 
   // Pagination Tracking Parameters
   currentPage: number = 1;
-  pageSize: number = 6; // Forces 5 items per display panel
-  selectedQuestionId: number | null = null;
+  pageSize: number = 5; // Forces 5 items per display panel
+  activeQuestionId: number | null = null;
   
   // Track open/closed states for individual cards using an index map
   expandedQuestions: { [key: number]: boolean } = {};
@@ -30,7 +30,6 @@ export class QuestionReview implements OnInit{
   selectedQuestion: number | null = null;
   isLoadingMisconceptions = false;
   misconceptionsError: string | null = null;
-
 
   ngOnInit(): void {
     this.loadAllQuestions();
@@ -90,12 +89,17 @@ export class QuestionReview implements OnInit{
   }
 
 
-  getSelectedQuestion(): Question | undefined {
-    return this.questions.find(q => q.id === this.selectedQuestionId);
-  }
 
-  isQuestionSelected(questionId: number): boolean {
-    return this.selectedQuestionId === questionId;
+  // 2. THE FIX: Define the toggle function that your HTML template is trying to call
+  toggleExpand(questionId: number): void {
+    // If it is open, make it false (close it). If it is closed, make it true (open it).
+    if (this.activeQuestionId === questionId) {
+      // If clicking the currently open card, close it
+      this.activeQuestionId = null;
+    } else {
+      // Opening a different panel automatically overwrites and closes the current card
+      this.activeQuestionId = questionId;
+    }
   }
 
   goBackToExam(): void {
