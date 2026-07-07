@@ -11,4 +11,5 @@ export interface QuestionMisconception {
   misconception_text: string;
   question_id: number;
   error_rate?: number;
+  question_text?: string;
 }
