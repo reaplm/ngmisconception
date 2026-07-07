@@ -3,11 +3,12 @@ export interface Question {
     question_text: string;
     best_answer: string;
     category_id: number;
-    misconceptions?: Misconception[];
+    misconceptions?: QuestionMisconception[];
 }
 
-export interface Misconception {
+export interface QuestionMisconception {
   id: number;
   misconception_text: string;
   question_id: number;
+  error_rate?: number;
 }
