@@ -1,0 +1,108 @@
+<div class="space-y-6 font-sans antialiased max-w-6xl mx-auto p-4">
+
+  <!-- 1. Header & Quick Filter Banner -->
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-xs">
+    <div>
+      <h2 class="text-xl font-bold text-slate-900 tracking-tight">Database Misconceptions</h2>
+      <p class="text-xs font-medium text-slate-400 mt-0.5">Review student misconceptions across all categories.</p>
+    </div>
+    
+    <!-- Quick Search Input Context -->
+    <div class="relative w-full max-w-xs">
+      <input type="text" placeholder="Search misconceptions..." 
+        class="w-full pl-10 pr-4 py-2 bg-slate-50 text-xs border border-slate-200 rounded-xl focus:outline-none focus:border-[#BDA6CE] focus:ring-4 focus:ring-purple-50 transition-all placeholder-slate-400" />
+      <svg class="w-4 h-4 stroke-slate-400 fill-none absolute left-3.5 top-1/2 transform -translate-y-1/2" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+    </div>
+  </div>
+
+  <!-- 2. Dynamic Grid Stack Layout -->
+  <div class="grid grid-cols-1 gap-4">
+    @for (m of misconceptions; track m.id) {
+      
+      <!-- Individual Misconception Entry Card -->
+      <div class="bg-white border border-slate-200 rounded-xl shadow-xs hover:shadow-md transition-all duration-300 overflow-hidden grid grid-cols-1 lg:grid-cols-12">
+        
+        <!-- Left Banner: The Incorrect Misconception (Spans 7 layout columns) -->
+        <div class="lg:col-span-7 p-6 flex items-start gap-4 border-b lg:border-b-0 lg:border-r border-slate-100">
+          <!-- Warning Badge -->
+          <div class="h-9 w-9 shrink-0 bg-rose-50 text-rose-600 rounded-xl flex items-center justify-center font-bold text-xs border border-rose-100">
+            ×
+          </div>
+          <div class="space-y-1.5">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-rose-600 bg-rose-50 px-2 py-0.5 rounded-md">Misconception #{{ m.id }}</span>
+              <span class="text-[10px] font-semibold text-slate-400">Linked to Q #{{ m.question_id }}</span>
+            </div>
+            <!-- Main Text Content -->
+            <p class="text-base font-bold text-slate-800 leading-snug">
+              {{ m.misconception_text }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Right Banner: Connected Parent Question Context (Spans 5 layout columns) -->
+        <div class="lg:col-span-5 p-6 bg-slate-50/60 flex flex-col justify-between gap-4">
+          <div class="space-y-1.5">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Parent Question Text</span>
+            <p class="text-xs font-medium text-slate-600 line-clamp-3 leading-relaxed">
+              {{ m.question_id }}
+            </p>
+          </div>
+
+          <!-- Quick Actions Tool Row -->
+          <div class="flex items-center justify-between pt-2 border-t border-slate-200/60">
+            <span class="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md">
+                Accuracy Drop: {{ m?.error_rate ?? 'N/A' }}%
+            </span>
+
+            <div class="flex gap-2">
+              <!-- Edit/Inspect Action Buttons -->
+              <button type="button" class="p-1.5 text-slate-400 hover:text-slate-900 hover:bg-slate-200/50 rounded-lg transition text-xs font-semibold">
+                Edit
+              </button>
+              <button type="button" class="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition text-xs font-semibold">
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    } @empty {
+      <!-- Empty State View -->
+      <div class="text-center py-16 bg-white rounded-2xl border border-slate-200 text-slate-400 shadow-xs">
+        <p class="font-semibold text-base text-slate-600">No misconceptions logged yet</p>
+        <p class="text-xs text-slate-400 mt-1 max-w-xs mx-auto">Create questions or bind custom user logic modules to begin displaying analytics mapping profiles.</p>
+      </div>
+    }
+  </div>
+
+  <!-- 3. Standard Footer Pagination Navigation Row -->
+  @if (misconceptions.length > 0) {
+    <div class="flex items-center justify-between border-t border-slate-200 pt-4 px-2 mt-6">
+      <div class="text-sm text-slate-500">
+        Page <span class="font-semibold text-slate-800">{{ currentPage }}</span> of <span class="font-semibold text-slate-800">{{ totalPages }}</span>
+      </div>
+
+      <div class="flex gap-2">
+        <button type="button" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1"
+          class="bg-white group flex items-center gap-3 text-slate-900 text-xs font-bold pl-2 pr-5 py-2 rounded-full cursor-pointer transition-all disabled:opacity-40 disabled:pointer-events-none border border-slate-200">
+          <div class="bg-[#BDA6CE] w-8 h-8 rounded-full flex items-center justify-center group-hover:-translate-x-1 transition-transform duration-300">
+            <svg class="w-4 h-4 stroke-slate-900 fill-none" stroke-width="2.5" viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 5 5 12 12 19"></polyline></svg>        
+          </div>
+          <span>Previous</span>
+        </button>
+
+        <button type="button" (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages"
+          class="bg-white group flex items-center gap-3 text-slate-900 text-xs font-bold pl-5 pr-2 py-2 rounded-full cursor-pointer transition-all disabled:opacity-40 disabled:pointer-events-none border border-slate-200">
+          <span>Next</span>
+          <div class="bg-[#BDA6CE] w-8 h-8 rounded-full flex items-center justify-center group-hover:translate-x-1 transition-transform duration-300">
+            <svg class="w-4 h-4 stroke-slate-900 fill-none" stroke-width="2.5" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </div>
+        </button>
+      </div>
+    </div>
+  }
+
+</div>
