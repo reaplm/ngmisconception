@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 import { Observable } from 'rxjs';
 import { QuestionMisconception } from '../models/question';
+import { PaginatedMisconceptionsResponse } from '../models/misconception';
 
 @Service()
 export class MisconceptionService {
@@ -10,13 +11,12 @@ export class MisconceptionService {
     private http = inject(HttpClient);
     private apiUrl = 'http://localhost:8000/api/v1';
 
-  // Fetch records dynamically using parameters for clean server-side pagination
-  getMisconceptions(page: number, limit: number = 10): Observable<QuestionMisconception[]> {
+   getMisconceptions(page: number, limit: number = 5): Observable<PaginatedMisconceptionsResponse> {
     const params = new HttpParams()
-      //.set('page', page.toString())
+      .set('page', page.toString())
       .set('limit', limit.toString());
 
-    return this.http.get<QuestionMisconception[]>(this.apiUrl + '/misconceptions', { params });
+    // FIXED: Realignment of HTTP get request type validations parameter
+    return this.http.get<PaginatedMisconceptionsResponse>(this.apiUrl + '/misconceptions', { params });
   }
-
 }

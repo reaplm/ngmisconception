@@ -17,7 +17,8 @@ export class Misconception implements OnInit{
   misconceptions: QuestionMisconception[] = [];
   currentPage = 1;
   totalPages = 1;
-  limit = 50; // Records per database chunk slice
+  limit = 5; // Records per database chunk slice
+  pageSize: number = 5;
   isLoading = false;
   errorMessage = '';
 
@@ -33,6 +34,11 @@ export class Misconception implements OnInit{
     }
   }
 
+  // Computes maximum pagination index ceiling bounds
+  getTotalPages(): number {
+    return Math.ceil(this.misconceptions.length / this.pageSize) || 1;
+  }
+
   // Centralised database execution logic hook
   fetchDatabaseRecords(): void {
     this.isLoading = true;
@@ -40,8 +46,13 @@ export class Misconception implements OnInit{
 
     this.misconceptionService.getMisconceptions(this.currentPage, this.limit)
       .subscribe({
-        next: (response: QuestionMisconception[]) => {
-          this.misconceptions = [...response];
+        next: (response: any) => {
+          this.misconceptions = response.misconceptions;
+
+          // Read values calculated directly on the database server layer
+        this.totalPages = response.total_pages; 
+        this.currentPage = response.current_page;
+
           this.isLoading = false;
           this.cdr.detectChanges();
         },
