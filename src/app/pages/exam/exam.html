@@ -30,37 +30,47 @@
       </div>
       
       <!-- After submit show these -->
-      @if (submissionFeedback && submissionFeedback.detected && submissionFeedback.misconception) {
-        <div class="mt-4 p-4 bg-rose-50 border border-rose-200 rounded-xl animate-fade-in">
-          <div class="flex items-start gap-3">
-            <span class="flex-shrink-0 mt-0.5 px-2 py-0.5 bg-rose-100 text-rose-800 text-[10px] font-bold uppercase rounded-md tracking-wider">
-              Misconception Detected
-            </span>
-            <div class="flex-1">
-              <p class="text-sm font-medium text-rose-900 leading-relaxed">
-                {{ submissionFeedback.misconception.text }}
-              </p>
-              <p class="text-[11px] text-rose-500 mt-1">
-                Confidence Score: {{ (submissionFeedback.highest_score * 100).toFixed(1) }}%
-              </p>
-            </div>
-          </div>
-        </div>
-      }
-      @else if (submissionFeedback && !submissionFeedback.detected){
-        <div class="mt-4 p-4 bg-emerald-50 border border-emerald-200 rounded-xl animate-fade-in">
-          <div class="flex items-start gap-3">
-            <span class="flex-shrink-0 mt-0.5 px-2 py-0.5 bg-emerald-100 text-lime-800 text-[10px] font-bold uppercase rounded-md tracking-wider">
-              Best Answer
-            </span>
-            <div class="flex-1">
-              <p class="text-sm font-medium text-emerald-500 leading-relaxed">
-                {{ activeQ.best_answer }}
+      <div class="h-[120px] flex items-start w-full py-3">
+        @if (showBestAnswer && submissionFeedback) {
+          <!-- CASE A: Misconception Detected View (Display custom warnings box) -->
+          @if (submissionFeedback.detected) {
+            <div class="w-full bg-rose-50 border border-rose-100 rounded-xl p-3 flex flex-col gap-1 animate-[fadeIn_0.2s_ease-out]">
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] font-bold text-rose-800 bg-rose-100 px-2 py-0.5 rounded uppercase tracking-wide">
+                  Misconception Detected
+                </span>
+                <span class="text-[10px] font-semibold text-slate-400">Match Confidence: {{ (submissionFeedback.highest_score * 100) | number:'1.0-0' }}%</span>
+              </div>
+              <p class="text-sm font-bold text-rose-900 leading-snug">
+                {{ submissionFeedback.misconception?.text }}
               </p>
             </div>
-          </div>
-        </div>
-      }
+          } 
+              <!-- CASE B: Correct/No Misconception Detected View (Display standard expected answer) -->
+          @else {
+           <div class="w-full flex flex-col gap-2 animate-[fadeIn_0.2s_ease-out]">
+    
+    <!-- Green Alert Box Container -->
+              <div class="w-full bg-emerald-50/60 border border-emerald-100 rounded-xl p-3 flex items-center gap-3">
+                <span class="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded uppercase tracking-wide shrink-0">
+                  Best Answer
+                </span>
+                <p class="text-sm font-medium text-emerald-900 line-clamp-2 leading-tight">
+                  {{ submissionFeedback.best_answer }}
+                </p>
+              </div>
+
+              <!-- Standalone Message Placement (Pushed to the absolute bottom) -->
+              <p class="text-xs font-bold text-slate-400 dark:text-slate-500 px-1 block">
+                Note: {{ submissionFeedback.message }}
+              </p>
+
+            </div>
+          }
+        }
+      </div>
+      
+      
     </div>
 
     <!-- Navigation Controls - Centered below card -->

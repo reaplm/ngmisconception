@@ -127,8 +127,11 @@ export class Exam implements OnInit{
 
     this.questionService.submitAnswer(questionId, answerValue).subscribe({
       next: (response: SubmissionResult) => {
+        
         // Save the backend object containing your payload
         this.submissionFeedback = response;
+        this.showBestAnswer = true;
+        console.error(this.submissionFeedback )
         this.cdr.detectChanges();
       },
       error: (err) => console.error(err)
