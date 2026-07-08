@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from '../../auth-service';
 import { Router } from '@angular/router';
 import { QuestionService } from '../../services/question-service';
@@ -17,6 +17,9 @@ export class Exam implements OnInit{
   private questionService = inject(QuestionService)
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
+
+@ViewChild('userAnswer') answerInputRef!: ElementRef<HTMLInputElement>;
+
   
   userEmail: string = '';
   questions: Question[] = [];
@@ -29,6 +32,10 @@ export class Exam implements OnInit{
 
   // Submit answer
   submissionFeedback: SubmissionResult | null = null;
+
+  showBestAnswer = false;
+  userAnswerText = ''; // Two-way binding property tracking data parameters
+
 
   ngOnInit(): void {
     // Check if user is logged in
@@ -48,6 +55,7 @@ export class Exam implements OnInit{
   // 2. Navigation Methods
   goToNextQuestion(): void {
     if (this.currentQuestionIndex < this.questions.length - 1) {
+      this.resetQuestionState();
       this.currentQuestionIndex++;
       this.cdr.detectChanges(); // Force template update
     }
@@ -55,6 +63,7 @@ export class Exam implements OnInit{
 
   goToPreviousQuestion(): void {
     if (this.currentQuestionIndex > 0) {
+      this.resetQuestionState();
       this.currentQuestionIndex--;
       this.cdr.detectChanges(); // Force template update
     }
@@ -97,6 +106,19 @@ export class Exam implements OnInit{
         this.isLoading = false;
       }
     });
+  }
+
+  // THE Centralised cleanup method to wipe the question card canvas fresh
+  private resetQuestionState(): void {
+    // FIXED: Added absolute reset to clear out previous data feedback objects completely
+    this.submissionFeedback = null;
+    this.showBestAnswer = false;
+    this.userAnswerText = '';
+
+    // Clear physical DOM element content values securely
+    if (this.answerInputRef && this.answerInputRef.nativeElement) {
+      this.answerInputRef.nativeElement.value = '';
+    }
   }
 
   onSubmitAnswer(questionId: number, inputElement: HTMLInputElement): void {
