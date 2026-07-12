@@ -23,7 +23,7 @@ export class Exam implements OnInit{
   
   userEmail: string = '';
   questions: Question[] = [];
-  questionIds: number[] = [9, 11, 22, 32, 38]
+  questionIds: number[] = [6, 7, 8, 9, 10]
   isLoading = true;
   errorMessage = '';
 
