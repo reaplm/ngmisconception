@@ -50,5 +50,6 @@ export class AdminLayout {
 
   logout(): void {
     this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }
