@@ -9,6 +9,7 @@ import { QuestionReview } from './pages/question-review/question-review';
 import { Categories } from './pages/categories/categories';
 import { Misconception } from './pages/misconception/misconception';
 import { User } from './pages/user/user';
+import { Dashboard } from './pages/dashboard/dashboard';
 
 export const routes: Routes = [
     {
@@ -33,7 +34,8 @@ export const routes: Routes = [
       { path: 'categories', component: Categories },
       { path: 'misconception', component: Misconception },
       { path: 'user', component: User },
-      { path: '', redirectTo: 'question-review', pathMatch: 'full' }
+      { path: 'dashboard', component: Dashboard },
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },
   { path: '**', redirectTo: '/login' }
