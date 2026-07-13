@@ -8,6 +8,7 @@ import { AdminLayout } from './layouts/admin-layout/admin-layout';
 import { QuestionReview } from './pages/question-review/question-review';
 import { Categories } from './pages/categories/categories';
 import { Misconception } from './pages/misconception/misconception';
+import { User } from './pages/user/user';
 
 export const routes: Routes = [
     {
@@ -31,6 +32,7 @@ export const routes: Routes = [
       { path: 'exam', component: Exam },
       { path: 'categories', component: Categories },
       { path: 'misconception', component: Misconception },
+      { path: 'user', component: User },
       { path: '', redirectTo: 'question-review', pathMatch: 'full' }
     ]
   },
