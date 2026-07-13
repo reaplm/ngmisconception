@@ -64,18 +64,26 @@
                 <!-- Account / Role Column -->
                 <td class="py-4 px-4">
                   <div class="flex flex-col">
-                    <span class="font-semibold text-gray-800 leading-tight">Registered User</span>
-                    <span class="text-xs text-gray-400 mt-0.5 capitalize">{{ user.role || 'Student' }}</span>
+                    @if (user.role_name === 'admin') {
+                        <span class="font-semibold text-gray-800 leading-tight">Administrator</span>
+                    }
+                    @else if (user.role_name === 'student') {
+                        <span class="font-semibold text-gray-800 leading-tight">Registered User</span>
+                    }
+                    @else{
+                        <span class="font-semibold text-gray-800 leading-tight">Guest User</span>
+                    }
+                    <span class="text-xs text-gray-400 mt-0.5 capitalize">{{ user.role_name || 'Student' }}</span>
                   </div>
                 </td>
                 
                 <!-- Rating Column (Dynamic Pastel Color Badges) -->
                 <td class="py-4 px-4">
-                  @if (user.role === 'admin') {
+                  @if (user.role_name === 'admin') {
                     <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-pink-50 text-pink-500 font-bold text-xs">
                       <span>Admin</span> 
                     </span>
-                  } @else if (user.role === 'student') {
+                  } @else if (user.role_name === 'student') {
                     <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-indigo-50 text-indigo-600 font-bold text-xs">
                       <span>Student</span> 
                     </span>

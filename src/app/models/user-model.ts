@@ -4,6 +4,6 @@ export interface UserModel {
     email: string;
     created_date: Date;
     last_login_date: Date;
-    role?: string;
+    role_name?: string;
     avatarUrl?: string;
 }
