@@ -1,50 +1,144 @@
 <!-- src/app/pages/users/users.component.html -->
-<div class="users-container">
-  <h2>User Directory</h2>
+<div class="w-full max-w-6xl mx-auto p-6 bg-gray-50/50 min-h-screen font-sans">
+  
+  <h2 class="text-xl font-bold text-gray-800 mb-6 tracking-tight">User Directory</h2>
 
   <!-- Loading State -->
   @if (isLoading()) {
-    <div class="loading-spinner">Loading users...</div>
+    <div class="flex items-center justify-center p-12 bg-white border border-gray-100 rounded-xl shadow-sm">
+      <div class="flex items-center gap-3 text-sm text-gray-500 font-medium">
+        <svg class="animate-spin h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span>Loading users directory...</span>
+      </div>
+    </div>
   }
 
   <!-- Error State -->
   @if (errorMessage()) {
-    <div class="error-banner">{{ errorMessage() }}</div>
+    <div class="p-4 bg-red-50 border border-red-100 rounded-xl text-sm text-red-600 font-medium mb-6">
+      {{ errorMessage() }}
+    </div>
   }
 
-  <!-- Users Table / Grid -->
+  <!-- Users Table Card -->
   @if (!isLoading() && !errorMessage()) {
-    <table class="users-table">
-      <thead>
-        <tr>
-          <th>Avatar</th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Role</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (user of users(); track user.id) {
-          <tr>
-            <td>
-              <img [src]="user.avatarUrl || 'assets/default-avatar.png'" alt="Avatar" class="avatar">
-            </td>
-            <td>{{ user.name }}</td>
-            <td>{{ user.email }}</td>
-            <td><span class="role-badge" [class]="user.role">{{ user.role }}</span></td>
-            <td>{{ user.last_login_date }}</td>
-            <td>
-              <!-- Dynamic Link to User Details Page -->
-              <a [routerLink]="['/users', user.id]" class="btn-view">View Profile</a>
-            </td>
-          </tr>
-        } @empty {
-          <tr>
-            <td colspan="5" class="no-data">No users found.</td>
-          </tr>
-        }
-      </tbody>
-    </table>
+    <div class="bg-white border border-gray-100 rounded-xl shadow-sm overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full border-collapse text-left">
+          <thead>
+            <tr class="bg-gray-100/80 border-b border-gray-200 text-xs font-bold tracking-wider text-gray-400 uppercase">
+              <th scope="col" class="py-3.5 pl-6 pr-3 w-12">
+                <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer">
+              </th>
+              <th scope="col" class="py-3.5 px-4">Profile</th>
+              <th scope="col" class="py-3.5 px-4">Account Details</th>
+              <th scope="col" class="py-3.5 px-4">Role</th>
+              <th scope="col" class="py-3.5 px-4">Date Created</th>
+              <th scope="col" class="py-3.5 px-4">Last Login</th>
+              <th scope="col" class="py-3.5 pl-4 pr-6 text-right w-16">Action</th>
+            </tr>
+          </thead>
+          
+          <tbody class="divide-y divide-gray-100 text-sm">
+            @for (user of users(); track user.id) {
+              <tr class="hover:bg-gray-50/40 transition-colors">
+                <!-- Checkbox Column -->
+                <td class="py-4 pl-6 pr-3 alignment-middle">
+                  <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer">
+                </td>
+                
+                <!-- Profile Column (Avatar + Primary Name + Subtext Email) -->
+                <td class="py-4 px-4">
+                  <div class="flex items-center gap-3">
+                    <img [src]="user.avatarUrl || 'assets/images/default-avatar.png'" [alt]="user.name" class="w-11 h-11 rounded-full object-cover bg-gray-100">
+                    <div class="flex flex-col">
+                      <span class="font-semibold text-gray-900 leading-tight">{{ user.name }}</span>
+                      <span class="text-xs text-gray-400 mt-0.5">{{ user.email }}</span>
+                    </div>
+                  </div>
+                </td>
+                
+                <!-- Account / Role Column -->
+                <td class="py-4 px-4">
+                  <div class="flex flex-col">
+                    <span class="font-semibold text-gray-800 leading-tight">Registered User</span>
+                    <span class="text-xs text-gray-400 mt-0.5 capitalize">{{ user.role || 'Student' }}</span>
+                  </div>
+                </td>
+                
+                <!-- Rating Column (Dynamic Pastel Color Badges) -->
+                <td class="py-4 px-4">
+                  @if (user.role === 'admin') {
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-pink-50 text-pink-500 font-bold text-xs">
+                      <span>Admin</span> 
+                    </span>
+                  } @else if (user.role === 'student') {
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-indigo-50 text-indigo-600 font-bold text-xs">
+                      <span>Student</span> 
+                    </span>
+                  } @else {
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-cyan-50 text-cyan-500 font-bold text-xs">
+                      <span>Guest</span> 
+                    </span>
+                  }
+                </td>
+                
+                <!-- Date Created Column -->
+                <td class="py-4 px-4">
+                  <div class="flex flex-col text-gray-800">
+                    <span class="font-semibold leading-tight">{{ user.last_login_date || '10/06/26' }}</span>
+                    <span class="text-xs text-gray-400 mt-0.5">09:20 AM</span>
+                  </div>
+                </td>
+                
+                <!-- Date Modified Column -->
+                <td class="py-4 px-4">
+                  <div class="flex flex-col text-gray-800">
+                    <span class="font-semibold leading-tight">{{ user.last_login_date || '24/05/26' }}</span>
+                    <span class="text-xs text-gray-400 mt-0.5">09:20 AM</span>
+                  </div>
+                </td>
+                
+                <!-- Router Action Column -->
+                <td class="py-4 pl-4 pr-6 text-right">
+                  <a [routerLink]="['/users', user.id]" 
+                     class="p-1 inline-block rounded-full text-gray-400 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+                     title="View Profile">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
+                    </svg>
+                  </a>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="7" class="py-12 text-center text-sm font-medium text-gray-400 bg-white">
+                  No users found in the system.
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Table Pagination Footer Bar -->
+      <div class="flex items-center justify-center gap-6 py-4 border-t border-gray-100 text-xs text-gray-400 bg-white">
+        <div>
+          Showing result <span class="font-bold text-gray-700 ml-1">1</span>
+        </div>
+        
+        <nav class="flex items-center gap-1" aria-label="Pagination">
+          <button class="w-7 h-7 flex items-center justify-center rounded text-gray-300 hover:bg-gray-50 font-bold" disabled>&lt;</button>
+          <button class="w-5 h-7 flex items-center justify-center font-bold text-gray-800">1</button>
+          <button class="w-5 h-7 flex items-center justify-center hover:text-gray-600">2</button>
+            <span class="px-0.5 tracking-widest text-[10px]">.......</span>
+          <button class="w-5 h-7 flex items-center justify-center hover:text-gray-600">3</button>
+          <button class="w-7 h-7 flex items-center justify-center rounded text-gray-400 hover:bg-gray-50 font-bold">&gt;</button>
+        </nav>
+      </div>
+    </div>
   }
 </div>
