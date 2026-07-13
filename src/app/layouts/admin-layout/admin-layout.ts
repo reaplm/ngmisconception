@@ -39,9 +39,14 @@ export class AdminLayout {
   }
 
   private checkActiveRoute(url: string): void {
-    // If the active URL path contains any of the child routes, automatically force it open
-    const childRoutes = ['/categories', '/questions', '/misconceptions', '/preview'];
-    const matchesChild = childRoutes.some(route => url.includes(route));
+    // Standardize URL by converting to lowercase to prevent case mismatches
+    const normalizedUrl = url.toLowerCase();
+
+    // List target keywords
+    const childKeywords = ['categories', 'question', 'misconception', 'preview', 'exam'];
+
+    // Check if the current nested route path contains any of our target keywords
+    const matchesChild = childKeywords.some(keyword => normalizedUrl.includes(keyword));
     
     if (matchesChild) {
       this.isExamPanelOpen = true;
