@@ -10,6 +10,7 @@ import { Categories } from './pages/categories/categories';
 import { Misconception } from './pages/misconception/misconception';
 import { User } from './pages/user/user';
 import { Dashboard } from './pages/dashboard/dashboard';
+import { Mcq } from './pages/mcq/mcq';
 
 export const routes: Routes = [
     {
@@ -35,6 +36,7 @@ export const routes: Routes = [
       { path: 'misconception', component: Misconception },
       { path: 'user', component: User },
       { path: 'dashboard', component: Dashboard },
+      { path: 'mcq', component: Mcq },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },
