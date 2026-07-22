@@ -21,15 +21,18 @@ export class QuestionService {
         return this.http.get<Question[]>(this.apiUrl + '/questions', {params});
     }
     // New method for getting specific questions by IDs
-    getQuestionsByIds(questionIds: number[]): Observable<Question[]> {
+    getQuestionsByIds(questionIds: number[], include_misconceptions: boolean = false): Observable<Question[]> {
         if (!questionIds || questionIds.length === 0) {
             return of([]); // Return empty array if no IDs provided
         }
         
-        const body = { question_ids: questionIds };
+        const params = new HttpParams().set('include_misconceptions', include_misconceptions)
+        const body = { question_ids: questionIds};
+
         return this.http.post<{ total: number; questions: Question[] }>(
             this.apiUrl + '/questions/batch',
-            body
+            body,
+            {params}
         ).pipe(
             map(response => response.questions)
         );
